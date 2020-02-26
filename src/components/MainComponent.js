@@ -10,7 +10,7 @@ import {Switch , Route, Redirect} from "react-router-dom";
 import { LEADERS } from './../shared/leaders';
 import { PROMOTIONS } from './../shared/promotions';
 import { COMMENTS } from './../shared/comments';
-
+import About from "./AboutComponent";
 
 class Main extends Component{
 
@@ -40,6 +40,23 @@ class Main extends Component{
         )
 
     }
+    // const DishWithId=(match)=>{
+    //     return(
+    //     <DishDetail dish={this.state.dishes.filter((dish)=> dish.id=== parseInt(match.params.dishId,10))[0]} 
+    //         comment={this.state.comments.filter((dish)=> dish.id=== parseInt(match.params.dishId,10))}
+    //     />
+    //     );
+    // };
+    const AboutUs =()=>{
+        return(
+        <About leaders={this.state.leaders}/>
+        )}
+    const DishWithId = ({match}) => {
+        return(
+            <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+              comments={this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+        );
+      };
   return (
     <div className="App">
       {/* <Header />  
@@ -52,7 +69,9 @@ class Main extends Component{
         <Switch>
             <Route path="/home" component={HomePage}></Route> 
             <Route exact path="/menu" component={()=> <Menu dishes={this.state.dishes}></Menu>}  ></Route>
+            <Route path="/menu/:dishId" component={DishWithId} ></Route>
             <Route exact path="/contactus" component={Contact}></Route> 
+            <Route exact path="/aboutus" component={AboutUs}></Route>
             <Redirect to="/home"></Redirect>
         </Switch>
       <Footer />
