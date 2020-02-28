@@ -10,13 +10,13 @@ class Contact extends Component{
         
 
        
-        this.handlesubmit=this.handlesubmit.bind(this);
+        this.handleSubmit=this.handleSubmit.bind(this);
        
     }
 
 
 
-    handlesubmit(values){
+    handleSubmit(values){
         console.log("Current State :" + JSON.stringify(values));
         alert("Current State :" + JSON.stringify(values));
        
