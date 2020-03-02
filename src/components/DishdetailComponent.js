@@ -31,9 +31,7 @@ class CommentSubmit extends Component{
     }
     handleSubmit(values) {
         this.toggleModal();
-        console.log("Current State :" + JSON.stringify(values));
-        alert("Current State :" + JSON.stringify(values));
-       
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
 
     }
     
@@ -94,61 +92,28 @@ class CommentSubmit extends Component{
   
     }
 }   
-const RenderComments = ({commentsArray}) => {
-  
-            return(
-                <div text-center>
-                    <h1>Comments</h1>
-            <div>{commentsArray[0].comment}<br></br><br></br>{commentsArray[0].author},
-                 {new Intl.DateTimeFormat("en-GB", {
-                                year: "numeric",
-                                month: "long",
-                                day: "2-digit"
-                                }).format(new Date(Date.parse(commentsArray[0].date))  
-                                )}
-                <br></br><br></br>
+const RenderComments = ({commentsArray, addComment, dishId}) => {
+        return(
+            <div text-center>
+               <h1>Comments</h1>
+               <div>
+               {commentsArray.map((value, index) => 
+                        <div key={index}>{commentsArray[index].comment}<br></br><br></br>{commentsArray[index].author},
+                        {new Intl.DateTimeFormat("en-GB", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "2-digit"
+                                    }).format(new Date(Date.parse(commentsArray[index].date))  
+                                    )}
+                    <br></br><br></br>
+                        </div>
+               
+            )}
             </div>
-            <div>{commentsArray[1].comment}<br></br><br></br>{commentsArray[1].author},
-            {new Intl.DateTimeFormat("en-GB", {
-                           year: "numeric",
-                           month: "long",
-                           day: "2-digit"
-                           }).format(new Date(Date.parse(commentsArray[1].date))  
-                           )}
-           <br></br><br></br>
-       </div>
-        <div>{commentsArray[2].comment}<br></br><br></br>{commentsArray[2].author},
-        {new Intl.DateTimeFormat("en-GB", {
-                       year: "numeric",
-                       month: "long",
-                       day: "2-digit"
-                       }).format(new Date(Date.parse(commentsArray[2].date))  
-                       )}
-       <br></br><br></br>
-   </div>
-   <div>{commentsArray[3].comment}<br></br><br></br>{commentsArray[3].author},
-                 {new Intl.DateTimeFormat("en-GB", {
-                                year: "numeric",
-                                month: "long",
-                                day: "2-digit"
-                                }).format(new Date(Date.parse(commentsArray[3].date))  
-                                )}
-                <br></br><br></br>
+                <CommentSubmit dishId={dishId} addComment={addComment}/>
             </div>
-            <div>{commentsArray[4].comment}<br></br><br></br>{commentsArray[4].author},
-            {new Intl.DateTimeFormat("en-GB", {
-                           year: "numeric",
-                           month: "long",
-                           day: "2-digit"
-                           }).format(new Date(Date.parse(commentsArray[4].date))  
-                           )}
-           <br></br><br></br>
-       </div>
-        <CommentSubmit />
-       </div>
-            );
-  
-   
+               )
+        
 }
 class DishDetail extends Component{
 
@@ -182,7 +147,9 @@ class DishDetail extends Component{
     
                     </div> 
                     <div className="col-12 col-md-5 pl-1">
-                        <RenderComments commentsArray={this.props.comments} dishCommented={myselected}/>
+                        <RenderComments commentsArray={this.props.comments} dishCommented={myselected}
+                           addComment={this.props.addComment}
+                           dishId={this.props.dish.id}/>
                     </div>
                 </div>
                 
