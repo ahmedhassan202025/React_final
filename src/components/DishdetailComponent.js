@@ -5,6 +5,7 @@ import {Breadcrumb,BreadcrumbItem} from "reactstrap";
 import { Link } from 'react-router-dom';
 import {Modal,ModalHeader,ModalBody,Col,Label,Row} from "reactstrap";
 import { Control, LocalForm ,Errors} from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 
 
@@ -124,34 +125,53 @@ class DishDetail extends Component{
     render() {
         // if(this.props.dish != null)
         // {
-            var myselected=this.props.dish;
-            return(
-                <div className="container">
+                if (this.props.isLoading) {
+                    return(
+                        <div className="container">
+                            <div className="row">            
+                                <Loading />
+                            </div>
+                        </div>
+                    );
+                }
+                else if (this.props.errMess) {
+                    return(
+                        <div className="container">
+                            <div className="row">            
+                                <h4>{this.props.errMess}</h4>
+                            </div>
+                        </div>
+                    );
+                }
+                else 
+                    var myselected=this.props.dish;
+                    return(
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-12">
+                                <Breadcrumb>
+                                    <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                                    <BreadcrumbItem active>{myselected.name}</BreadcrumbItem>
+                                </Breadcrumb>
+                            </div>
+                        </div>
                     <div className="row">
-                        <div className="col-12">
-                            <Breadcrumb>
-                                <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                                <BreadcrumbItem active>{myselected.name}</BreadcrumbItem>
-                            </Breadcrumb>
+                        <div key={myselected.id} className="col-12 col-md-5 pl-1">
+                            <Card>
+                                <CardImg  top width="100%" src={myselected.image} alt={myselected.name} />
+                                <CardBody>
+                                    <CardTitle>{myselected.name}</CardTitle>
+                                    <CardText>{myselected.description}</CardText>
+                                </CardBody>
+                            </Card>
+        
+                        </div> 
+                        <div className="col-12 col-md-5 pl-1">
+                            <RenderComments commentsArray={this.props.comments} dishCommented={myselected}
+                            addComment={this.props.addComment}
+                            dishId={this.props.dish.id}/>
                         </div>
                     </div>
-                <div className="row">
-                    <div key={myselected.id} className="col-12 col-md-5 pl-1">
-                        <Card>
-                            <CardImg  top width="100%" src={myselected.image} alt={myselected.name} />
-                            <CardBody>
-                                <CardTitle>{myselected.name}</CardTitle>
-                                 <CardText>{myselected.description}</CardText>
-                            </CardBody>
-                        </Card>
-    
-                    </div> 
-                    <div className="col-12 col-md-5 pl-1">
-                        <RenderComments commentsArray={this.props.comments} dishCommented={myselected}
-                           addComment={this.props.addComment}
-                           dishId={this.props.dish.id}/>
-                    </div>
-                </div>
                 
                 </div>
             );
