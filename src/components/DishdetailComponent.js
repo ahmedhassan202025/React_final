@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import {Modal,ModalHeader,ModalBody,Col,Label,Row} from "reactstrap";
 import { Control, LocalForm ,Errors} from 'react-redux-form';
 import { Loading } from './LoadingComponent';
-
+import { baseUrl } from '../shared/baseUrl';
 
 
 const required = (val) => val && val.length;
@@ -32,7 +32,7 @@ class CommentSubmit extends Component{
     }
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
 
     }
     
@@ -93,7 +93,7 @@ class CommentSubmit extends Component{
   
     }
 }   
-const RenderComments = ({commentsArray, addComment, dishId}) => {
+const RenderComments = ({commentsArray, postComment, dishId}) => {
         return(
             <div text-center>
                <h1>Comments</h1>
@@ -111,7 +111,7 @@ const RenderComments = ({commentsArray, addComment, dishId}) => {
                
             )}
             </div>
-                <CommentSubmit dishId={dishId} addComment={addComment}/>
+                <CommentSubmit dishId={dishId} postComment={postComment}/>
             </div>
                )
         
@@ -158,7 +158,7 @@ class DishDetail extends Component{
                     <div className="row">
                         <div key={myselected.id} className="col-12 col-md-5 pl-1">
                             <Card>
-                                <CardImg  top width="100%" src={myselected.image} alt={myselected.name} />
+                                <CardImg  top width="100%" src={baseUrl + this.props.dish.image} alt={myselected.name} />
                                 <CardBody>
                                     <CardTitle>{myselected.name}</CardTitle>
                                     <CardText>{myselected.description}</CardText>
@@ -168,7 +168,7 @@ class DishDetail extends Component{
                         </div> 
                         <div className="col-12 col-md-5 pl-1">
                             <RenderComments commentsArray={this.props.comments} dishCommented={myselected}
-                            addComment={this.props.addComment}
+                            postComment={this.props.postComment}
                             dishId={this.props.dish.id}/>
                         </div>
                     </div>
