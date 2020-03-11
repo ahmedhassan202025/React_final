@@ -1,12 +1,12 @@
 import React,{ Component} from 'react';
-import {Media,CardImg,CardImgOverlay,CardTitle,Card, CardText,CardBody, Button} from 'reactstrap';
-import Menu from './MenuComponent';
+import {CardImg,CardTitle,Card, CardText,CardBody, Button} from 'reactstrap';
 import {Breadcrumb,BreadcrumbItem} from "reactstrap";
 import { Link } from 'react-router-dom';
-import {Modal,ModalHeader,ModalBody,Col,Label,Row} from "reactstrap";
+import {Modal,ModalHeader,ModalBody,Label,Row} from "reactstrap";
 import { Control, LocalForm ,Errors} from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
 const required = (val) => val && val.length;
@@ -98,7 +98,9 @@ const RenderComments = ({commentsArray, postComment, dishId}) => {
             <div text-center>
                <h1>Comments</h1>
                <div>
-               {commentsArray.map((value, index) => 
+               {commentsArray.map((value, index) =>
+               <Stagger in> 
+                    <Fade in>
                         <div key={index}>{commentsArray[index].comment}<br></br><br></br>{commentsArray[index].author},
                         {new Intl.DateTimeFormat("en-GB", {
                                     year: "numeric",
@@ -108,7 +110,8 @@ const RenderComments = ({commentsArray, postComment, dishId}) => {
                                     )}
                     <br></br><br></br>
                         </div>
-               
+                    </Fade>
+                </Stagger>   
             )}
             </div>
                 <CommentSubmit dishId={dishId} postComment={postComment}/>
@@ -118,10 +121,7 @@ const RenderComments = ({commentsArray, postComment, dishId}) => {
 }
 class DishDetail extends Component{
 
-    constructor(props){
-        super(props);
 
-    }
     render() {
         // if(this.props.dish != null)
         // {
@@ -157,6 +157,11 @@ class DishDetail extends Component{
                         </div>
                     <div className="row">
                         <div key={myselected.id} className="col-12 col-md-5 pl-1">
+                        <FadeTransform
+                                in
+                                transformProps={{
+                                    exitTransform: 'scale(0.5) translateY(-50%)'
+                                }}>
                             <Card>
                                 <CardImg  top width="100%" src={baseUrl + this.props.dish.image} alt={myselected.name} />
                                 <CardBody>
@@ -164,7 +169,7 @@ class DishDetail extends Component{
                                     <CardText>{myselected.description}</CardText>
                                 </CardBody>
                             </Card>
-        
+                         </FadeTransform>       
                         </div> 
                         <div className="col-12 col-md-5 pl-1">
                             <RenderComments commentsArray={this.props.comments} dishCommented={myselected}

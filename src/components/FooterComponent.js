@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import Menu from './MenuComponent';
 function Footer(props) {
     return(
     <div className="footer">
